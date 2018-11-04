@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	public User findByName(String name) {
-		return userRepository.findByName(name);
+		return userRepository.findByEmail(name);
 	}
 
 	public void saveUser(User user) {
@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	public boolean isUserExist(User user) {
-		return findByName(user.getName()) != null;
+		return findByName(user.getFirst_name()) != null;
 	}
 
 }

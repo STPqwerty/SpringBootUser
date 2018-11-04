@@ -61,9 +61,9 @@ public class RestApiController {
 		logger.info("Creating User : {}", user);
 
 		if (userService.isUserExist(user)) {
-			logger.error("Unable to create. A User with name {} already exist", user.getName());
+			logger.error("Unable to create. A User with name {} already exist", user.getFirst_name());
 			return new ResponseEntity(new CustomErrorType("Unable to create. A User with name " + 
-			user.getName() + " already exist."),HttpStatus.CONFLICT);
+			user.getFirst_name() + " already exist."),HttpStatus.CONFLICT);
 		}
 		userService.saveUser(user);
 
@@ -86,9 +86,13 @@ public class RestApiController {
 					HttpStatus.NOT_FOUND);
 		}
 
-		currentUser.setName(user.getName());
-		currentUser.setAge(user.getAge());
-		currentUser.setSalary(user.getSalary());
+		currentUser.setFirst_name(user.getFirst_name());
+		currentUser.setMiddle_name(user.getMiddle_name());
+		currentUser.setLast_name(user.getLast_name());
+		currentUser.setPhone_num(user.getPhone_num());
+		currentUser.setEmail(user.getEmail());
+//		currentUser.setAdress(user.getAdress());
+		currentUser.setBirth_date(user.getBirth_date());
 
 		userService.updateUser(currentUser);
 		return new ResponseEntity<User>(currentUser, HttpStatus.OK);
