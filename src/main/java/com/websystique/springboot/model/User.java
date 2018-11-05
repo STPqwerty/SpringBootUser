@@ -113,18 +113,23 @@ public class User implements Serializable{
 
 	//Насколько эти методы нужны? стоит ли переписывать их?
 
-	//	@Override
-//	public boolean equals(Object o) {
-//		if (this == o) return true;
-//		if (o == null || getClass() != o.getClass()) return false;
-//
-//		User user = (User) o;
-//
+		@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		User user = (User) o;
+
 //		if (Double.compare(user.salary, salary) != 0) return false;
-//		if (id != null ? !id.equals(user.id) : user.id != null) return false;
-//		if (name != null ? !name.equals(user.name) : user.name != null) return false;
-//		return age != null ? age.equals(user.age) : user.age == null;
-//	}
+		if (id != null ? !id.equals(user.id) : user.id != null) return false;
+		if (first_name != null ? !first_name.equals(user.first_name) : user.first_name != null) return false;
+		if (last_name != null ? !last_name.equals(user.last_name) : user.last_name != null) return false;
+		if (middle_name != null ? !middle_name.equals(user.middle_name) : user.middle_name != null) return false;
+		if (phone_num != null ? !phone_num.equals(user.phone_num) : user.phone_num != null) return false;
+		if (email != null ? !email.equals(user.email) : user.email != null) return false;
+//		return (birth_date != null ? !birth_date.equals(user.birth_date) : user.birth_date != null) == null;
+		return birth_date != null ? birth_date.equals(user.birth_date) : user.birth_date == null;
+	}
 
 //	@Override
 //	public int hashCode() {
@@ -140,7 +145,7 @@ public class User implements Serializable{
 
 //	@Override
 //	public String toString() {
-//		return "User [id=" + id + ", name=" + name + ", age=" + age
+//		return "User [id=" + id + ", name=" + first_name + middle_name + last_name + ", age=" + age
 //				+ ", salary=" + salary + "]";
 //	}
 

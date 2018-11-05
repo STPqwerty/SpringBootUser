@@ -23,13 +23,13 @@ angular.module('crudApp').controller('UserController',
         self.onlyNumbers = /^\d+([,.]\d+)?$/;
 
         function submit() {
-            console.log('Submitting');
+            console.log('About to create user');
             if (self.user.id === undefined || self.user.id === null) {
-                console.log('Saving New User', self.user);
+                console.log('Сохранение нового пользователя', self.user);
                 createUser(self.user);
             } else {
                 updateUser(self.user, self.user.id);
-                console.log('User updated with id ', self.user.id);
+                console.log('Пользователь обновлен с id ', self.user.id);
             }
         }
 
@@ -39,15 +39,15 @@ angular.module('crudApp').controller('UserController',
                 .then(
                     function (response) {
                         console.log('User created successfully');
-                        self.successMessage = 'User created successfully';
+                        self.successMessage = 'Пользователь создан успешно';
                         self.errorMessage='';
                         self.done = true;
                         self.user={};
                         $scope.myForm.$setPristine();
                     },
                     function (errResponse) {
-                        console.error('Error while creating User');
-                        self.errorMessage = 'Error while creating User: ' + errResponse.data.errorMessage;
+                        console.error(' Error while creating User');
+                        self.errorMessage = 'Ошибка при создании Пользователя: ' + errResponse.data.errorMessage;
                         self.successMessage='';
                     }
                 );
