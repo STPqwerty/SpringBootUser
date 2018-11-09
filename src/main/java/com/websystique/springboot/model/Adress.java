@@ -1,5 +1,8 @@
 package com.websystique.springboot.model;
 
+import jdk.nashorn.internal.objects.annotations.Getter;
+import jdk.nashorn.internal.objects.annotations.Setter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -12,9 +15,21 @@ public class Adress implements Serializable {
     private Long id;//а в таблице у меня инт ничего?
 
 //<-------!Нужен ли геттер сеттер? все ли корректно?!-------->
-    @ManyToOne
-    @JoinColumn(name="adress_id")
-    private User user;
+//    @ManyToOne
+//    @JoinColumn(name="adress_id")
+//    private User user;
+
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
+@JoinColumn(name ="adress_id")
+private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 //<-------!!-------->
 
     @Column(name="region")
@@ -81,5 +96,18 @@ public class Adress implements Serializable {
     }
 
 
-//НУЖНО ЛИ ПЕРЕОПРЕДЕЛЯТЬ ТУСТРИНГ ХЭШКОД И ИКВЭЛС
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Adress adress = (Adress) o;
+
+        if (id != null ? !id.equals(adress.id) : adress.id != null) return false;
+        if (region != null ? !region.equals(adress.region) : adress.region != null) return false;
+        if (city != null ? !city.equals(adress.city) : adress.city != null) return false;
+        if (street != null ? !street.equals(adress.street) : adress.street != null) return false;
+        if (!adress.num_house.equals(num_house)) return false;
+        return appartment != null ? appartment.equals(adress.appartment) : adress.appartment == null;
+    }
 }

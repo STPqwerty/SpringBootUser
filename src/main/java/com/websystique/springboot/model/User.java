@@ -16,7 +16,7 @@ public class User implements Serializable{
 	private Long id;
 
 	@NotEmpty
-	@Column(name="first_name", nullable=false)//можно ли создать переменную с одним именем first_name+middle_name+last_name?
+	@Column(name="first_name", nullable=false)
 	private String first_name;
 
 	@NotEmpty
@@ -27,24 +27,26 @@ public class User implements Serializable{
 	@Column(name="middle_name", nullable=false)
 	private String middle_name;
 
-	@Column(name="phone_num")//нулабле тру нужно ??
-	private Integer phone_num;// ? инт или обертка? что лучше?
+	@Column(name="phone_num")
+	private String phone_num;
 
 	@Column(name="email")
 	private String email;
 
-	//<------------->
-	@OneToMany(mappedBy = "user")
-//	@Column(name="adress_id") //какая аннотация другой таблицы
-	private List<Adress> adress;
-
-	public List<Adress> getAdress() {
+	public Adress getAdress() {
 		return adress;
 	}
 
-	public void setAdress(List<Adress> adress) {
+	public void setAdress(Adress adress) {
 		this.adress = adress;
 	}
+
+	//<------------->
+//	@OneToMany(mappedBy = "user")
+////	@Column(name="adress_id") //какая аннотация другой таблицы
+//	private Adress adress;
+	@OneToOne(optional = false, mappedBy = "user")
+	private Adress adress;
 //<------------->
 
 	@Column(name="birth_date")//нулабле тру нужно ??
@@ -86,11 +88,11 @@ public class User implements Serializable{
 		this.middle_name = middle_name;
 	}
 
-	public Integer getPhone_num() {
+	public String getPhone_num() {
 		return phone_num;
 	}
 
-	public void setPhone_num(Integer phone_num) {
+	public void setPhone_num(String phone_num) {
 		this.phone_num = phone_num;
 	}
 
@@ -111,8 +113,6 @@ public class User implements Serializable{
 	}
 
 
-	//Насколько эти методы нужны? стоит ли переписывать их?
-
 		@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -131,23 +131,27 @@ public class User implements Serializable{
 		return birth_date != null ? birth_date.equals(user.birth_date) : user.birth_date == null;
 	}
 
-//	@Override
-//	public int hashCode() {
-//		int result;
-//		long temp;
-//		result = id != null ? id.hashCode() : 0;
-//		result = 31 * result + (name != null ? name.hashCode() : 0);
-//		result = 31 * result + (age != null ? age.hashCode() : 0);
+	@Override
+	public int hashCode() {
+		int result;
+		long temp;
+		result = id != null ? id.hashCode() : 0;
+		result = 31 * result + (first_name != null ? first_name.hashCode() : 0);
+        result = 31 * result + (last_name != null ? last_name.hashCode() : 0);
+        result = 31 * result + (middle_name != null ? middle_name.hashCode() : 0);
+        result = 31 * result + (phone_num != null ? phone_num.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+		result = 31 * result + (birth_date != null ? birth_date.hashCode() : 0);
 //		temp = Double.doubleToLongBits(salary);
 //		result = 31 * result + (int) (temp ^ (temp >>> 32));
-//		return result;
-//	}
+		return result;
+	}
 
-//	@Override
-//	public String toString() {
-//		return "User [id=" + id + ", name=" + first_name + middle_name + last_name + ", age=" + age
-//				+ ", salary=" + salary + "]";
-//	}
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + first_name + middle_name + last_name + ", phone number: " + phone_num
+				+ ", email: " + email + ", birth year: " +  birth_date + ", Address: " + adress + "]";
+	}
 
 
 }

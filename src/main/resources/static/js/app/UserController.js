@@ -47,7 +47,7 @@ angular.module('crudApp').controller('UserController',
                     },
                     function (errResponse) {
                         console.error(' Error while creating User');
-                        self.errorMessage = 'Ошибка при создании Пользователя: ' + errResponse.data.errorMessage;
+                        self.errorMessage = 'Ошибка при создании Пользователя: ' + errResponse.data.message;
                         self.successMessage='';
                     }
                 );
@@ -109,6 +109,10 @@ angular.module('crudApp').controller('UserController',
             self.errorMessage='';
             self.user={};
             $scope.myForm.$setPristine(); //reset Form
+        }
+
+        function search(str) {
+            UserService.search(str)
         }
     }
 

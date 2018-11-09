@@ -1,7 +1,11 @@
 package com.websystique.springboot.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.websystique.springboot.model.Adress;
+import com.websystique.springboot.service.AdressUserViewModel;
+import org.apache.tomcat.util.digester.ArrayStack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,9 +61,13 @@ public class RestApiController {
 	// -------------------Create a User-------------------------------------------
 
 	@RequestMapping(value = "/user/", method = RequestMethod.POST)
-	public ResponseEntity<?> createUser(@RequestBody User user, UriComponentsBuilder ucBuilder) {
-		logger.info("Creating User : {}", user);
+	public ResponseEntity<?> createUser(@RequestBody AdressUserViewModel adressAndUser, UriComponentsBuilder ucBuilder) {
+		logger.info("Creating User : {}", adressAndUser);
 
+		User user = convertToUser(adressAndUser);
+
+		Adress adress = convertToAdress(adressAndUser);
+		user.setAdress(adress);
 		if (userService.isUserExist(user)) {
 			logger.error("Unable to create. A User with name {} already exist", user.getFirst_name());
 			return new ResponseEntity(new CustomErrorType("Unable to create. A User with name " + 
@@ -71,6 +79,32 @@ public class RestApiController {
 		headers.setLocation(ucBuilder.path("/api/user/{id}").buildAndExpand(user.getId()).toUri());
 		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
 	}
+
+	private User convertToUser(AdressUserViewModel adressAndUser) {
+		User user = new User();
+		user.setId(adressAndUser.getUserId());
+		user.setFirst_name(adressAndUser.getFirst_name());
+		user.setLast_name(adressAndUser.getLast_name());
+		user.setMiddle_name(adressAndUser.getMiddle_name());
+		user.setAdress((Adress) adressAndUser.getAdress());
+		user.setBirth_date(adressAndUser.getBirth_date());
+		user.setEmail(adressAndUser.getEmail());
+		user.setPhone_num(adressAndUser.getPhone_num());
+		return user;
+	}
+
+	private Adress convertToAdress(AdressUserViewModel adressAndUser){
+		Adress adress = new Adress();
+		adress.setId(adressAndUser.getAddressId());
+		adress.setRegion(adressAndUser.getRegion());
+		adress.setCity(adressAndUser.getCity());
+		adress.setStreet(adressAndUser.getStreet());
+		adress.setNum_house(adressAndUser.getNum_house());
+		adress.setAppartment(adressAndUser.getAppartment());
+		return adress;
+	}
+
+
 
 	// ------------------- Update a User ------------------------------------------------
 

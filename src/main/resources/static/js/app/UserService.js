@@ -64,7 +64,7 @@ angular.module('crudApp').factory('UserService',
                             deferred.resolve(response.data);
                         },
                         function (errResponse) {
-                           console.error('Error while creating User : '+errResponse.data.errorMessage);
+                           console.error('Error while creating User : '+errResponse.data.message);
                            deferred.reject(errResponse);
                         }
                     );
@@ -103,6 +103,10 @@ angular.module('crudApp').factory('UserService',
                         }
                     );
                 return deferred.promise;
+            }
+
+            function search(str) {
+                $http.get()
             }
 
         }
