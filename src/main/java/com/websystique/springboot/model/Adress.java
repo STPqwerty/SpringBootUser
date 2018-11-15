@@ -19,17 +19,17 @@ public class Adress implements Serializable {
 //    @JoinColumn(name="adress_id")
 //    private User user;
 
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
-@JoinColumn(name ="adress_id")
-private User user;
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+//    @OneToOne(optional = false, cascade = CascadeType.ALL)
+//@JoinColumn(name ="adress_id")
+//private User user;
+//
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
 //<-------!!-------->
 
     @Column(name="region")

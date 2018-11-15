@@ -45,7 +45,8 @@ public class User implements Serializable{
 //	@OneToMany(mappedBy = "user")
 ////	@Column(name="adress_id") //какая аннотация другой таблицы
 //	private Adress adress;
-	@OneToOne(optional = false, mappedBy = "user")
+	@OneToOne(optional = false)
+    @JoinColumn(name ="adress_id")
 	private Adress adress;
 //<------------->
 

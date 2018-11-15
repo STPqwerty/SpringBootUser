@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.websystique.springboot.model.Adress;
+import com.websystique.springboot.service.AdressService;
 import com.websystique.springboot.service.AdressUserViewModel;
 import org.apache.tomcat.util.digester.ArrayStack;
 import org.slf4j.Logger;
@@ -23,6 +24,10 @@ import com.websystique.springboot.model.User;
 import com.websystique.springboot.service.UserService;
 import com.websystique.springboot.util.CustomErrorType;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
+
 @RestController
 @RequestMapping("/api")
 public class RestApiController {
@@ -31,6 +36,12 @@ public class RestApiController {
 
 	@Autowired
 	UserService userService; //Service which will do all data retrieval/manipulation work
+
+    @Autowired
+    AdressService adressService;
+
+    @PersistenceContext
+    EntityManager entityManager;
 
 	// -------------------Retrieve All Users---------------------------------------------
 
@@ -61,19 +72,23 @@ public class RestApiController {
 	// -------------------Create a User-------------------------------------------
 
 	@RequestMapping(value = "/user/", method = RequestMethod.POST)
+    @Transactional
 	public ResponseEntity<?> createUser(@RequestBody AdressUserViewModel adressAndUser, UriComponentsBuilder ucBuilder) {
 		logger.info("Creating User : {}", adressAndUser);
 
 		User user = convertToUser(adressAndUser);
 
 		Adress adress = convertToAdress(adressAndUser);
-		user.setAdress(adress);
 		if (userService.isUserExist(user)) {
 			logger.error("Unable to create. A User with name {} already exist", user.getFirst_name());
 			return new ResponseEntity(new CustomErrorType("Unable to create. A User with name " + 
 			user.getFirst_name() + " already exist."),HttpStatus.CONFLICT);
 		}
+        adress = adressService.saveAdress(adress);
+        user.setAdress(adress);
 		userService.saveUser(user);
+
+        this.entityManager.flush();
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setLocation(ucBuilder.path("/api/user/{id}").buildAndExpand(user.getId()).toUri());

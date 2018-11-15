@@ -23,6 +23,10 @@ angular.module('crudApp').factory('UserService',
                         function (response) {
                             console.log('Fetched successfully all users');
                             $localStorage.users = response.data;
+                            // $localStorage.users.forEach(function (user) {
+                            //     var adress = user.adress;
+                            //     user.adress = adress.street + ", " + adress.num_house;
+                            // })
                             deferred.resolve(response);
                         },
                         function (errResponse) {
